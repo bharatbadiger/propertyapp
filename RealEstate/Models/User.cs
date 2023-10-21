@@ -14,6 +14,7 @@ namespace RealEstate.Models
         public virtual string AadharFront { get; set; }
         public virtual string AadharBack { get; set; }
         public virtual string PAN { get; set; }
+        public virtual UserType UserType { get; set; }
         public virtual DateTimeOffset CreatedDate { get; set; }
         public virtual DateTimeOffset UpdatedDate { get; set; }
     }

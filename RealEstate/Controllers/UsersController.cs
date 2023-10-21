@@ -13,11 +13,12 @@
         public class UsersController : ControllerBase
         {
 
-            private readonly IRepository<User> _userRepository;
+            private readonly IRepository<User> _genericRepository;
+            private readonly UserRepository _useRepository;
 
             public UsersController(IRepository<User> userRepository)
             {
-                _userRepository = userRepository;
+                _genericRepository = userRepository;
             }
 
             
@@ -25,7 +26,7 @@
             [HttpGet]
             public async Task<ActionResult<IEnumerable<User>>> GetUsers()
             {
-                var users = await _userRepository.GetAllAsync();
+                var users = await _genericRepository.GetAllAsync();
 
                 if (users == null || !users.Any())
                 {
@@ -46,7 +47,7 @@
             [ProducesResponseType(StatusCodes.Status404NotFound)]
             public async Task<ActionResult<ApiResponse<User>>> GetUser(int id)
             {
-                var user = await _userRepository.GetByIdAsync(id);
+                var user = await _genericRepository.GetByIdAsync(id);
 
                 if (user == null)
                 {
@@ -56,6 +57,42 @@
 
                 return Ok(new ApiResponse<User>(true, "User retrieved successfully", user));
             }
+
+            // GET: api/users/phone/{phoneNumber}
+            [HttpGet("mobileNo/{mobileNo}")]
+            [ProducesResponseType(StatusCodes.Status200OK)]
+            [ProducesResponseType(StatusCodes.Status404NotFound)]
+            public async Task<ActionResult<ApiResponse<User>>> GetUserByPhone(string mobileNo)
+            {
+                var user = await _useRepository.GetUserByMobileNoAsync(mobileNo);
+
+                if (user == null)
+                {
+                    var response = new ApiResponse<User>(false, "User not found", null);
+                    return NotFound(response);
+                }
+
+                return Ok(new ApiResponse<User>(true, "User retrieved successfully", user));
+            }
+
+
+            // GET: api/users/email/{email}
+            [HttpGet("email/{email}")]
+            [ProducesResponseType(StatusCodes.Status200OK)]
+            [ProducesResponseType(StatusCodes.Status404NotFound)]
+            public async Task<ActionResult<ApiResponse<User>>> GetUserByEmail(string email)
+            {
+                var user = await _useRepository.GetUserByEmailAsync(email);
+
+                if (user == null)
+                {
+                    var response = new ApiResponse<User>(false, "User not found", null);
+                    return NotFound(response);
+                }
+
+                return Ok(new ApiResponse<User>(true, "User retrieved successfully", user));
+            }
+
 
             // POST: api/users
             [HttpPost]
@@ -68,7 +105,7 @@
                     return BadRequest(errorResponse);
                 }
 
-                var createdUser = await _userRepository.CreateAsync(user);
+                var createdUser = await _genericRepository.CreateAsync(user);
 
                 if (createdUser == null)
                 {
@@ -87,7 +124,7 @@
             [HttpPut("{id}")]
             public async Task<ActionResult<ApiResponse<User>>> UpdateUser(int id, [FromBody] User updatedUser)
             {
-                var user = await _userRepository.UpdateAsync(id, updatedUser);
+                var user = await _genericRepository.UpdateAsync(id, updatedUser);
 
                 if (user == null)
                 {
@@ -107,7 +144,7 @@
             [HttpDelete("{id}")]
             public async Task<ActionResult<ApiResponse<User>>> DeleteUser(int id)
             {
-                var result = await _userRepository.DeleteAsync(id);
+                var result = await _genericRepository.DeleteAsync(id);
 
                 if (!result)
                 {

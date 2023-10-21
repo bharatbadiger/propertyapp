@@ -14,8 +14,10 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("RealEstateConnectionString")));
-builder.Services.AddScoped<IRepository<Property>, PropertyRepository>();
+
 builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped<IRepository<Property>, PropertyRepository>();
+builder.Services.AddScoped<IRepository<User>, UserRepository>();
 
 var app = builder.Build();
 
