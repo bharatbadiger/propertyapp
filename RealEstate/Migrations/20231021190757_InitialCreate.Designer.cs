@@ -12,8 +12,8 @@ using RealEstate.Data;
 namespace RealEstate.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231021185002_updateEntity")]
-    partial class updateEntity
+    [Migration("20231021190757_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,6 +37,9 @@ namespace RealEstate.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("CreatedById")
+                        .HasColumnType("int");
+
                     b.Property<DateTimeOffset>("CreatedDate")
                         .HasColumnType("datetimeoffset");
 
@@ -44,7 +47,7 @@ namespace RealEstate.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PhoneNo")
+                    b.Property<string>("MobileNo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -59,6 +62,8 @@ namespace RealEstate.Migrations
                         .HasColumnType("datetimeoffset");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
 
                     b.ToTable("Leads");
                 });
@@ -183,9 +188,23 @@ namespace RealEstate.Migrations
                     b.Property<DateTimeOffset>("UpdatedDate")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<int>("UserType")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("RealEstate.Models.Lead", b =>
+                {
+                    b.HasOne("RealEstate.Models.User", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CreatedBy");
                 });
 
             modelBuilder.Entity("RealEstate.Models.PropertyImage", b =>
