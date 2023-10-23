@@ -37,6 +37,20 @@
             return properties;
         }
 
+        public async Task<IEnumerable<Property>> GetPropertiesByCityAsync(string city)
+        {
+            var propertiesInCity = await _context.Properties
+                .Where(p => p.City == city)
+                .ToListAsync();
+
+            foreach (var property in propertiesInCity)
+            {
+                await _context.Entry(property).Collection(p => p.Images).LoadAsync();
+            }
+
+            return propertiesInCity;
+        }
+
         public async Task<Property> CreateAsync(Property property)
         {
             //property.Id = Guid.NewGuid();
@@ -49,16 +63,28 @@
 
         public async Task<Property> UpdateAsync(int id, Property updatedProperty)
         {
-            if (!_context.Properties.Any(p => p.Id == id))
+            var existingProperty = await GetByIdAsync(id);
+            if (existingProperty==null)
             {
                 return null;
             }
 
-            updatedProperty.Id = id;
-            updatedProperty.UpdatedDate = DateTimeOffset.UtcNow;
-            _context.Entry(updatedProperty).State = EntityState.Modified;
+            // Use the Entry method to track the entity
+            _context.Entry(existingProperty).State = EntityState.Detached;
+
+            // Loop through the properties and update if they are not null
+            foreach (var property in typeof(Property).GetProperties())
+            {
+                var updatedValue = property.GetValue(updatedProperty);
+                if (updatedValue != null)
+                {
+                    property.SetValue(existingProperty, updatedValue);
+                }
+            }
+
+            // Update the modified entity in the database
             await _context.SaveChangesAsync();
-            return updatedProperty;
+            return existingProperty;
         }
 
         public async Task<bool> DeleteAsync(int id)

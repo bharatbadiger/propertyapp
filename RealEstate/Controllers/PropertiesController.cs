@@ -84,6 +84,19 @@
             return Ok(new ApiResponse<Property>(true, "Property retrieved successfully", property));
         }
 
+        [HttpGet("city/{city}")]
+        public async Task<ActionResult<ApiResponse<Property>>> GetPropertyByCity(string city)
+        {
+            PropertyRepository propertyRepository1 = (PropertyRepository)_propertyRepository;
+            var property = await propertyRepository1.GetPropertiesByCityAsync(city);
+            if (property.Count() >0)
+            {
+                return Ok(new ApiResponse<IEnumerable<Property>>(true, $"Properties for {city} retrieved successfully", property));
+
+            }
+            return NotFound(new ApiResponse<Property>(true, $"Properties for {city} not Found", null));
+        }
+
         // POST: api/properties
         [HttpPost]
         public async Task<ActionResult<ApiResponse<Property>>> CreateProperty([FromBody] Property property)
@@ -112,7 +125,8 @@
 
         // PUT: api/properties/{id}
         [HttpPut("{id}")]
-        public async Task<ActionResult<ApiResponse<Property>>> UpdateProperty(int id, [FromBody] Property updatedProperty)
+        [IgnoreAntiforgeryToken]
+        public async Task<ActionResult<ApiResponse<Property>>> UpdateProperty(int id, [FromBody] Property  updatedProperty)
         {
             var property = await _propertyRepository.UpdateAsync(id, updatedProperty);
 
