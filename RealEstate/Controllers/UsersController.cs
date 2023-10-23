@@ -14,7 +14,6 @@
         {
 
             private readonly IRepository<User> _genericRepository;
-            private readonly UserRepository _useRepository;
 
             public UsersController(IRepository<User> userRepository)
             {
@@ -47,7 +46,7 @@
             [ProducesResponseType(StatusCodes.Status404NotFound)]
             public async Task<ActionResult<ApiResponse<User>>> GetUser(int id)
             {
-                var user = await _genericRepository.GetByIdAsync(id);
+                    var user = await _genericRepository.GetByIdAsync(id);
 
                 if (user == null)
                 {
@@ -62,9 +61,9 @@
             [HttpGet("mobileNo/{mobileNo}")]
             [ProducesResponseType(StatusCodes.Status200OK)]
             [ProducesResponseType(StatusCodes.Status404NotFound)]
-            public async Task<ActionResult<ApiResponse<User>>> GetUserByPhone(string mobileNo)
+            public async Task<ActionResult<ApiResponse<User>>> GetUserByPhone([FromServices] UserRepository _userRepository,string mobileNo)
             {
-                var user = await _useRepository.GetUserByMobileNoAsync(mobileNo);
+                var user = await _userRepository.GetUserByMobileNoAsync(mobileNo);
 
                 if (user == null)
                 {
@@ -77,12 +76,12 @@
 
 
             // GET: api/users/email/{email}
-            [HttpGet("email/{email}")]
+            [HttpGet("email")]
             [ProducesResponseType(StatusCodes.Status200OK)]
             [ProducesResponseType(StatusCodes.Status404NotFound)]
-            public async Task<ActionResult<ApiResponse<User>>> GetUserByEmail(string email)
+            public async Task<ActionResult<ApiResponse<User>>> GetUserphoneByEmail([FromServices] UserRepository _userRepository, [FromQuery] string email)
             {
-                var user = await _useRepository.GetUserByEmailAsync(email);
+                var user = await _userRepository.GetUserByEmailAsync(email);
 
                 if (user == null)
                 {

@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using RealEstate.Data;
 using RealEstate.Models;
 using RealEstate.Repositories;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +18,12 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("RealEstateConnec
 
 builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IRepository<Property>, PropertyRepository>();
-builder.Services.AddScoped<IRepository<User>, UserRepository>();
+builder.Services.AddScoped<UserRepository>();
+
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
 
 var app = builder.Build();
 

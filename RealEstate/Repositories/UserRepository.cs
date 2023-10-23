@@ -14,12 +14,14 @@
 
         public UserRepository(ApplicationDbContext context) : base(context)
         {
+            _context = context;
         }
 
         public async Task<User> GetUserByMobileNoAsync(string mobileNo)
         {
             return await _context.Set<User>().FirstOrDefaultAsync(u => u.MobileNo == mobileNo);
         }
+
         public async Task<User> GetUserByEmailAsync(string email)
         {
             return await _context.Set<User>().FirstOrDefaultAsync(u => u.Email == email);
