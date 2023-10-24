@@ -14,6 +14,19 @@ namespace RealEstate.Data
         public DbSet<User> Users { get; set; }
 
 
+
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Lead>()
+                .HasOne(lead => lead.CreatedBy) // CreatedBy navigation property
+                .WithMany() // No need to specify a navigation property on the other side
+                .HasForeignKey(lead => lead.CreatedById); // Foreign key relationship
+
+            // Other configurations...
+        }
+
+
         //public override int SaveChanges()
         //{
         //    var currentTime = DateTimeOffset.UtcNow;
