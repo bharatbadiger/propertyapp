@@ -14,7 +14,7 @@ namespace RealEstate.Repositories
         }
 
 
-        public async Task<TEntity> GetByIdAsync(int id)
+        public virtual async Task<TEntity> GetByIdAsync(int id)
         {
             return await _context.Set<TEntity>().FindAsync(id);
         }
@@ -24,7 +24,7 @@ namespace RealEstate.Repositories
             return await _context.Set<TEntity>().ToListAsync();
         }
 
-        public async Task<TEntity> CreateAsync(TEntity entity)
+        public virtual async Task<TEntity> CreateAsync(TEntity entity)
         {
             entity.CreatedDate = DateTimeOffset.UtcNow;
             entity.UpdatedDate = DateTimeOffset.UtcNow;
@@ -33,7 +33,7 @@ namespace RealEstate.Repositories
             return entity;
         }
 
-        public async Task<TEntity> UpdateAsync(int id, TEntity updatedEntity)
+        public virtual async Task<TEntity> UpdateAsync(int id, TEntity updatedEntity)
         {
             var existingEntity = await GetByIdAsync(id);
             if (existingEntity == null)
@@ -49,7 +49,7 @@ namespace RealEstate.Repositories
             return existingEntity;
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public virtual async Task<bool> DeleteAsync(int id)
         {
             var entity = await GetByIdAsync(id);
             if (entity == null)

@@ -15,6 +15,17 @@
         {
             _context = context;
         }
+
+        public override async Task<Lead> GetByIdAsync(int id)
+        {
+            var lead = await _context.Leads
+                .Include(l => l.CreatedBy)
+                .FirstOrDefaultAsync(l => l.Id == id);
+
+            return lead;
+        }
+
+
         public async Task<IEnumerable<Lead>> GetAllLeadsByCreatedById(int userId)
         {
 
@@ -31,10 +42,10 @@
             return leads;
 
 
-            // Filter leads by the CreatedById property
-            return await _context.Leads
-                .Where(lead => lead.CreatedById == userId)
-                .ToListAsync();
+            //// Filter leads by the CreatedById property
+            //return await _context.Leads
+            //    .Where(lead => lead.CreatedById == userId)
+            //    .ToListAsync();
         }
 
 
