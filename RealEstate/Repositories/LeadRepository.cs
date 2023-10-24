@@ -13,6 +13,7 @@
         private readonly ApplicationDbContext _context; // Replace with your DbContext
         public LeadRepository(ApplicationDbContext context) : base(context)
         {
+            _context = context;
         }
         public async Task<IEnumerable<Lead>> GetAllLeadsByCreatedById(int userId)
         {
