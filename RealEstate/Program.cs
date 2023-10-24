@@ -19,6 +19,7 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("RealEstateConnec
 builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IRepository<Property>, PropertyRepository>();
 builder.Services.AddScoped<UserRepository>();
+builder.Services.AddScoped<LeadRepository>();
 
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
