@@ -15,8 +15,8 @@ namespace RealEstate.Models
         public virtual string Comment { get; set; }
         // Reference to the User who created the lead
         [ForeignKey("CreatedById")]
-        public virtual User CreatedBy { get; set; }
-        public int? CreatedById { get; set; }
+        public virtual User? CreatedBy { get; set; }
+        public int CreatedById { get; set; }
         public virtual DateTimeOffset CreatedDate { get; set; }
         public virtual DateTimeOffset UpdatedDate { get; set; }
     }
