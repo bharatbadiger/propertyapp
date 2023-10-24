@@ -51,6 +51,26 @@
             return Ok(new ApiResponse<Lead>(true, "Lead retrieved successfully", lead));
         }
 
+        // GET: api/leads/createdby/{createdById}
+        [HttpGet("createdby/{createdById}")]
+        public async Task<ActionResult<IEnumerable<Lead>>> GetLeadsByCreatedById([FromServices] LeadRepository leadRepository, int createdById)
+        {
+            var leads = await leadRepository.GetAllLeadsByCreatedById(createdById);
+
+            if (leads == null || !leads.Any())
+            {
+                var errorMessage = "No leads found for the specified CreatedById.";
+                var errorResponse = new ApiResponse<IEnumerable<Lead>>(false, errorMessage, null);
+                return NotFound(errorResponse);
+            }
+
+            var successMessage = "Leads retrieved successfully for the specified CreatedById.";
+            var successResponse = new ApiResponse<IEnumerable<Lead>>(true, successMessage, leads);
+
+            return Ok(successResponse);
+        }
+
+
         // POST: api/leads
         [HttpPost]
         public async Task<ActionResult<ApiResponse<Lead>>> CreateLead([FromBody] Lead lead)

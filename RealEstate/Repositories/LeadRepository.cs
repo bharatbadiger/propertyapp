@@ -14,12 +14,26 @@
         public LeadRepository(ApplicationDbContext context) : base(context)
         {
         }
-        public IEnumerable<Lead> GetAllLeadsByCreatedById(int userId)
+        public async Task<IEnumerable<Lead>> GetAllLeadsByCreatedById(int userId)
         {
+
+            var leads = await _context.Leads
+            .Where(lead => lead.CreatedById == userId)
+            .ToListAsync();
+
+            foreach (var lead in leads)
+            {
+                await _context.Entry(lead).Reference(l => l.CreatedBy).LoadAsync();
+                // Load any other related data as needed
+            }
+
+            return leads;
+
+
             // Filter leads by the CreatedById property
-            return _context.Leads
+            return await _context.Leads
                 .Where(lead => lead.CreatedById == userId)
-                .ToList();
+                .ToListAsync();
         }
 
 
