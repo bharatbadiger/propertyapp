@@ -12,6 +12,7 @@ namespace RealEstate.Models.DTO
         public decimal BHK { get; set; }
         public string Location { get; set; }
         public string City { get; set; }
+        public string? MainImage { get; set; }
         public List<PropertyImageDTO> Images { get; set; }
         public PropertyType Type { get; set; }
         public double Area { get; set; }

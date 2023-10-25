@@ -54,9 +54,15 @@
 
         public async Task<IEnumerable<Property>> GetPropertiesByCityAndTypeAsync(string city, PropertyType propertyType)
         {
-            return await _context.Properties
+            var propertiesInCity = await _context.Properties
                 .Where(p => p.City == city && p.Type == propertyType)
                 .ToListAsync();
+            foreach (var property in propertiesInCity)
+            {
+                await _context.Entry(property).Collection(p => p.Images).LoadAsync();
+            }
+
+            return propertiesInCity;
         }
 
         public async Task<Property> CreateAsync(Property property)

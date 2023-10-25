@@ -17,7 +17,7 @@ namespace RealEstate.Models
         public virtual decimal BHK { get; set; }
         public virtual string Location { get; set; }
         public virtual string City { get; set; }
-        public virtual string MainImage { get; set; }
+        public virtual string? MainImage { get; set; }
         public virtual List<PropertyImage> Images { get; set; }
         public virtual PropertyType Type { get; set; }
         //[Range(0, double.MaxValue, ErrorMessage = "Area must be a non-negative value.")]
