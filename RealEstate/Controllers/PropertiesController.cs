@@ -1,5 +1,6 @@
 ﻿namespace RealEstate.Controllers
 {
+    using global::RealEstate.Constants;
     using global::RealEstate.Models;
     using global::RealEstate.Models.DTO;
     using global::RealEstate.Repositories;
@@ -83,18 +84,20 @@
             }
             return Ok(new ApiResponse<Property>(true, "Property retrieved successfully", property));
         }
-
-        [HttpGet("city/{city}")]
-        public async Task<ActionResult<ApiResponse<Property>>> GetPropertyByCity(string city)
+        
+        // GET: api/properties/city/
+        [HttpGet("city")]
+        public async Task<ActionResult<ApiResponse<IEnumerable<Property>>>> GetPropertyByCityAndType([FromQuery] string city, [FromQuery] PropertyType propertyType)
         {
             PropertyRepository propertyRepository1 = (PropertyRepository)_propertyRepository;
-            var property = await propertyRepository1.GetPropertiesByCityAsync(city);
-            if (property.Count() >0)
-            {
-                return Ok(new ApiResponse<IEnumerable<Property>>(true, $"Properties for {city} retrieved successfully", property));
+            var properties = await propertyRepository1.GetPropertiesByCityAndTypeAsync(city, propertyType);
 
+            if (properties.Count() > 0)
+            {
+                return Ok(new ApiResponse<IEnumerable<Property>>(true, $"Properties for {city} with type {propertyType} retrieved successfully", properties));
             }
-            return NotFound(new ApiResponse<Property>(true, $"Properties for {city} not Found", null));
+
+            return NotFound(new ApiResponse<IEnumerable<Property>>(true, $"Properties for {city} with type {propertyType} not Found", null));
         }
 
         // POST: api/properties

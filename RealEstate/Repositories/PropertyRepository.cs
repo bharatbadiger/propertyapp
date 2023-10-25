@@ -1,6 +1,7 @@
 ﻿namespace RealEstate.Repositories
 {
     using Microsoft.EntityFrameworkCore;
+    using RealEstate.Constants;
     using RealEstate.Data; // Replace with your DbContext namespace
     using RealEstate.Models;
     using System;
@@ -49,6 +50,13 @@
             }
 
             return propertiesInCity;
+        }
+
+        public async Task<IEnumerable<Property>> GetPropertiesByCityAndTypeAsync(string city, PropertyType propertyType)
+        {
+            return await _context.Properties
+                .Where(p => p.City == city && p.Type == propertyType)
+                .ToListAsync();
         }
 
         public async Task<Property> CreateAsync(Property property)

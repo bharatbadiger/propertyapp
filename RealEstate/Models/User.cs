@@ -18,6 +18,7 @@ namespace RealEstate.Models
         public virtual string VPA { get; set; }
         public virtual UserType UserType { get; set; }
         public virtual string? Image { get; set; }
+        public virtual string? ReferralCode { get; set; }
         public virtual bool? IsKycVerified { get; set; }
         public virtual DateTimeOffset CreatedDate { get; set; }
         public virtual DateTimeOffset UpdatedDate { get; set; }
