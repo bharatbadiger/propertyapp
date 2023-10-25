@@ -23,6 +23,11 @@ namespace RealEstate.Data
                 .WithMany() // No need to specify a navigation property on the other side
                 .HasForeignKey(lead => lead.CreatedById); // Foreign key relationship
 
+
+            modelBuilder.Entity<Property>()
+                .HasMany(p => p.Images)
+                .WithOne()
+                .OnDelete(DeleteBehavior.Cascade);
             // Other configurations...
         }
 
