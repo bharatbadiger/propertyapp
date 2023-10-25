@@ -1,10 +1,15 @@
-﻿namespace RealEstate.Constants
+﻿using System.ComponentModel;
+
+namespace RealEstate.Constants
 {
     public enum PropertyType
     {
-        Property,
-        Loan,
-        Construction,
-        Interior
+        Flats,
+        Plots,
+        Resale,
+        Farmlands,
+        [Description("Commercial Properties")]
+        CommercialProperties,
+        Investments
     }
 }
