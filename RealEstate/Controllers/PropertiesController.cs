@@ -71,6 +71,29 @@
             return Ok(successResponse);
         }
 
+        // POST api/properties/get-multiple
+        [HttpPost("get-multiple")]
+        public async Task<ActionResult<IEnumerable<Property>>> GetMultipleUsers([FromBody] IDList request)
+        {
+            if (request == null || request.Ids == null || !request.Ids.Any())
+            {
+                return BadRequest("Invalid input.");
+            }
+
+            PropertyRepository propertyRepository1 = (PropertyRepository)_propertyRepository;
+            var properties = await propertyRepository1.GetPropertiesByIds(request.Ids);
+
+            if (properties == null || !properties.Any())
+            {
+                return NotFound("No Properties found.");
+            }
+
+            var successMessage = "Properties retrieved successfully.";
+            var successResponse = new ApiResponse<IEnumerable<Property>>(true, successMessage, properties);
+
+            return Ok(successResponse);
+        }
+
         // GET: api/properties/{id}
         [HttpGet("{id}")]
         public async Task<ActionResult<ApiResponse<Property>>> GetProperty(int id)

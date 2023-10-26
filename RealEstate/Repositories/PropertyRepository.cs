@@ -113,5 +113,13 @@
             await _context.SaveChangesAsync();
             return true;
         }
+
+        public async Task<IEnumerable<Property>> GetPropertiesByIds(List<int> propertyIds)
+        {
+            // Query the database to retrieve users with matching IDs
+            return await _context.Properties
+                .Where(p => propertyIds.Contains(p.Id))
+                .ToListAsync();
+        }
     }
 }
