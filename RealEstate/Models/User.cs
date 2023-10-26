@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using RealEstate.Constants;
+using Newtonsoft.Json;
 
 namespace RealEstate.Models
 {
@@ -20,7 +21,15 @@ namespace RealEstate.Models
         public virtual string? Image { get; set; }
         public virtual string? ReferralCode { get; set; }
         public virtual bool? IsKycVerified { get; set; }
-        public virtual ICollection<int>? FavoritePropertyIds { get; set; }
+        [NotMapped]
+        public ICollection<int> FavoritePropertyIds { get; set; }
+
+        [Column("FavoritePropertyIds")]
+        public string FavoritePropertyIdsJson
+        {
+            get => JsonConvert.SerializeObject(FavoritePropertyIds);
+            set => FavoritePropertyIds = JsonConvert.DeserializeObject<ICollection<int>>(value);
+        }
         public virtual DateTimeOffset CreatedDate { get; set; }
         public virtual DateTimeOffset UpdatedDate { get; set; }
     }
