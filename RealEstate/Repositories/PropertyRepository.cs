@@ -117,9 +117,15 @@
         public async Task<IEnumerable<Property>> GetPropertiesByIds(List<int> propertyIds)
         {
             // Query the database to retrieve users with matching IDs
-            return await _context.Properties
+            var properties =  await _context.Properties
                 .Where(p => propertyIds.Contains(p.Id))
                 .ToListAsync();
+            foreach (var property in properties)
+            {
+                await _context.Entry(property).Collection(p => p.Images).LoadAsync();
+            }
+
+            return properties;
         }
     }
 }
