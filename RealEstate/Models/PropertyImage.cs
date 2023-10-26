@@ -5,5 +5,6 @@
         public Guid Id { get; set; }
         public virtual string MediaType { get; set; }
         public virtual string Url { get; set; }
+        public string? Thumbnail { get; set; }
     }
 }

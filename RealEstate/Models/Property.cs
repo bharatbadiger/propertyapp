@@ -11,9 +11,9 @@ namespace RealEstate.Models
         public virtual string? Title { get; set; }
         public virtual string? SubTitle { get; set; }
         //[Range(0, double.MaxValue, ErrorMessage = "Price must be a non-negative value.")]
-        public virtual decimal? Price { get; set; }
+        public virtual string? Price { get; set; }
         //[Range(1, int.MaxValue, ErrorMessage = "Number of rooms must be a positive integer.")]
-        public virtual decimal? NumberOfRooms { get; set; }
+        public virtual string? NumberOfRooms { get; set; }
         //[Range(1, int.MaxValue, ErrorMessage = "BHK must be a positive integer.")]
         public virtual string? BHK { get; set; }
         public virtual string? Location { get; set; }
@@ -22,7 +22,7 @@ namespace RealEstate.Models
         public virtual List<PropertyImage> Images { get; set; }
         public virtual PropertyType Type { get; set; }
         //[Range(0, double.MaxValue, ErrorMessage = "Area must be a non-negative value.")]
-        public virtual double? Area { get; set; }
+        public virtual string? Area { get; set; }
         public virtual AreaUnit AreaUnit { get; set; }
         [StringLength(500, ErrorMessage = "Description cannot exceed 500 characters.")]
         public virtual string? Description { get; set; }
