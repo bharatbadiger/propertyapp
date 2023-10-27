@@ -19,8 +19,18 @@
         public override async Task<Lead> GetByIdAsync(int id)
         {
             var lead = await _context.Leads
-                .Include(l => l.CreatedBy)
-                .FirstOrDefaultAsync(l => l.Id == id);
+                    .Include(l => l.CreatedBy)
+                    .Include(l => l.LeadCommentModel) // Include the LeadCommentModel
+                    .Where(l => l.Id == id)
+                    .FirstOrDefaultAsync();
+
+            if (lead != null && lead.LeadCommentModel != null)
+            {
+                // Sort the comments within LeadCommentModel by timestamp
+                lead.LeadCommentModel = lead.LeadCommentModel
+                    .OrderBy(comment => comment.TimeStamp)
+                    .ToList();
+            }
 
             return lead;
         }
@@ -36,6 +46,13 @@
             foreach (var lead in leads)
             {
                 await _context.Entry(lead).Reference(l => l.CreatedBy).LoadAsync();
+                if (lead != null && lead.LeadCommentModel != null)
+                {
+                    // Sort the comments within LeadCommentModel by timestamp
+                    lead.LeadCommentModel = lead.LeadCommentModel
+                        .OrderBy(comment => comment.TimeStamp)
+                        .ToList();
+                }
                 // Load any other related data as needed
             }
 

@@ -68,8 +68,8 @@
         public async Task<Property> CreateAsync(Property property)
         {
             //property.Id = Guid.NewGuid();
-            property.CreatedDate = DateTimeOffset.UtcNow;
-            property.UpdatedDate = DateTimeOffset.UtcNow;
+            property.CreatedDate = DateTimeOffset.Now;
+            property.UpdatedDate = DateTimeOffset.Now;
             _context.Properties.Add(property);
             await _context.SaveChangesAsync();
             return property;

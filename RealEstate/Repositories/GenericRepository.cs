@@ -26,8 +26,8 @@ namespace RealEstate.Repositories
 
         public virtual async Task<TEntity> CreateAsync(TEntity entity)
         {
-            entity.CreatedDate = DateTimeOffset.UtcNow;
-            entity.UpdatedDate = DateTimeOffset.UtcNow;
+            entity.CreatedDate = DateTimeOffset.Now;
+            entity.UpdatedDate = DateTimeOffset.Now;
             _context.Set<TEntity>().Add(entity);
             await _context.SaveChangesAsync();
             return entity;
@@ -43,7 +43,7 @@ namespace RealEstate.Repositories
 
             // Update existingEntity properties with updatedEntity properties
 
-            existingEntity.UpdatedDate = DateTimeOffset.UtcNow;
+            existingEntity.UpdatedDate = DateTimeOffset.Now;
             _context.Entry(existingEntity).CurrentValues.SetValues(updatedEntity);
             await _context.SaveChangesAsync();
             return existingEntity;

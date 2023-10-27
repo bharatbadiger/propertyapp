@@ -12,7 +12,7 @@ namespace RealEstate.Models
         public virtual string MobileNo { get; set; }
         public virtual string FullName { get; set; }
         public virtual string Status { get; set; } // Open or Closed
-        public virtual string Comment { get; set; }
+        public virtual List<LeadCommentModel> LeadCommentModel { get; set; }
         // Reference to the User who created the lead
         [ForeignKey("CreatedById")]
         public virtual User? CreatedBy { get; set; }
