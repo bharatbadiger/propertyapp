@@ -52,19 +52,23 @@ namespace RealEstate.Repositories
 
             updatedEntity.CreatedDate = existingEntity.CreatedDate;
             updatedEntity.UpdatedDate = DateTimeOffset.Now;
+            List<LeadCommentModel> commentModelList = new List<LeadCommentModel>();
 
+            if (existingEntity is Lead exLeadEntity)
+            {
+                if(exLeadEntity.LeadCommentModel != null)
+                {
+                    commentModelList = exLeadEntity.LeadCommentModel.ToList();
+                }
+            }
             if (updatedEntity is Lead lead)
             {
                 foreach (var commentModel in lead.LeadCommentModel)
                 {
                     commentModel.TimeStamp = DateTimeOffset.Now;
-                    if (existingEntity is Lead exLeadEntity)
-                    {
-                        exLeadEntity.LeadCommentModel.Add(commentModel);
-                    }
-                        
+                    commentModelList.Add(commentModel);
                 }
-
+                lead.LeadCommentModel.AddRange(commentModelList);
             }
 
             _context.Entry(existingEntity).CurrentValues.SetValues(updatedEntity);
