@@ -24,15 +24,15 @@
                     .Where(l => l.Id == id)
                     .FirstOrDefaultAsync();
 
+            await _context.Entry(lead).Collection(l => l.LeadCommentModel).LoadAsync();
+
             if (lead != null && lead.LeadCommentModel != null)
             {
                 // Sort the comments within LeadCommentModel by timestamp
                 lead.LeadCommentModel = lead.LeadCommentModel
-                    .OrderBy(comment => comment.TimeStamp)
+                    .OrderByDescending(comment => comment.TimeStamp)
                     .ToList();
             }
-
-            await _context.Entry(lead).Collection(l => l.LeadCommentModel).LoadAsync();
             return lead;
         }
 
@@ -51,7 +51,7 @@
                 {
                     // Sort the comments within LeadCommentModel by timestamp
                     lead.LeadCommentModel = lead.LeadCommentModel
-                        .OrderBy(comment => comment.TimeStamp)
+                        .OrderByDescending(comment => comment.TimeStamp)
                         .ToList();
                 }
                 await _context.Entry(lead).Collection(l => l.LeadCommentModel).LoadAsync();
