@@ -19,11 +19,11 @@
         public override async Task<Lead> GetByIdAsync(int id)
         {
             var lead = await _context.Leads
-                    .Include(l => l.CreatedBy)
-                    .Include(l => l.LeadCommentModel) // Include the LeadCommentModel
+                    //.Include(l => l.CreatedBy)
+                    //.Include(l => l.LeadCommentModel) // Include the LeadCommentModel
                     .Where(l => l.Id == id)
                     .FirstOrDefaultAsync();
-
+            await _context.Entry(lead).Reference(l => l.CreatedBy).LoadAsync();
             await _context.Entry(lead).Collection(l => l.LeadCommentModel).LoadAsync();
 
             if (lead != null && lead.LeadCommentModel != null)
