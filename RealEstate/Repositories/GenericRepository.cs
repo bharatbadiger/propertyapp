@@ -54,23 +54,28 @@ namespace RealEstate.Repositories
             updatedEntity.UpdatedDate = DateTimeOffset.Now;
             List<LeadCommentModel> commentModelList = new List<LeadCommentModel>();
 
-            if (existingEntity is Lead exLeadEntity)
-            {
-                if(exLeadEntity.LeadCommentModel != null)
-                {
-                    commentModelList = exLeadEntity.LeadCommentModel.ToList();
-                }
-            }
             if (updatedEntity is Lead lead)
             {
-                foreach (var commentModel in lead.LeadCommentModel)
+                // Check if the updated entity is of type Lead
+                if (existingEntity is Lead exLeadEntity)
                 {
-                    commentModel.TimeStamp = DateTimeOffset.Now;
-                    commentModelList.Add(commentModel);
-                }
-                lead.LeadCommentModel.AddRange(commentModelList);
-            }
+                    // Clear the existing comments in case of an update
+                    //exLeadEntity.LeadCommentModel.Clear();
 
+                    if (lead.LeadCommentModel != null)
+                    {
+                        foreach (var commentModel in lead.LeadCommentModel)
+                        {
+                            // Set the timestamp for each comment
+                            commentModel.TimeStamp = DateTimeOffset.Now;
+                            exLeadEntity.LeadCommentModel.Add(commentModel);
+                        }
+                    }
+                }
+
+                // Update other Lead-specific properties if needed
+                // exLeadEntity.SomeProperty = lead.SomeProperty;
+            }
             _context.Entry(existingEntity).CurrentValues.SetValues(updatedEntity);
             await _context.SaveChangesAsync();
             return existingEntity;
