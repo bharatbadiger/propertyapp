@@ -68,6 +68,7 @@ namespace RealEstate.Repositories
                         {
                             // Set the timestamp for each comment
                             commentModel.TimeStamp = DateTimeOffset.Now;
+                            Console.WriteLine(exLeadEntity);
                             exLeadEntity.LeadCommentModel.Add(commentModel);
                         }
                     }
