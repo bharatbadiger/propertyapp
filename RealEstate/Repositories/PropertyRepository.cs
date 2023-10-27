@@ -84,7 +84,7 @@
             }
 
             // Use the Entry method to track the entity
-            _context.Entry(existingProperty).State = EntityState.Detached;
+            _context.Entry(existingProperty).State = EntityState.Modified;
 
             // Loop through the properties and update if they are not null
             foreach (var property in typeof(Property).GetProperties())
