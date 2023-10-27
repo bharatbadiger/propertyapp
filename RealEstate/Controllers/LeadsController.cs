@@ -38,9 +38,9 @@
 
         // GET: api/leads/{id}
         [HttpGet("{id}")]
-        public async Task<ActionResult<ApiResponse<Lead>>> GetLead(int id)
+        public async Task<ActionResult<ApiResponse<Lead>>> GetLead([FromServices] LeadRepository leadRepository, int id)
         {
-            var lead = await _leadRepository.GetByIdAsync(id);
+            var lead = await leadRepository.GetByIdAsync(id);
 
             if (lead == null)
             {
