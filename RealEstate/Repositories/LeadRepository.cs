@@ -36,6 +36,26 @@
             return lead;
         }
 
+        public override async Task<IEnumerable<Lead>> GetAllAsync()
+        {
+            var leads = await _context.Set<Lead>().ToListAsync();
+            foreach (var lead in leads)
+            {
+                await _context.Entry(lead).Reference(l => l.CreatedBy).LoadAsync();
+                if (lead != null && lead.LeadCommentModel != null)
+                {
+                    // Sort the comments within LeadCommentModel by timestamp
+                    lead.LeadCommentModel = lead.LeadCommentModel
+                        .OrderByDescending(comment => comment.TimeStamp)
+                        .ToList();
+                }
+                await _context.Entry(lead).Collection(l => l.LeadCommentModel).LoadAsync();
+            }
+
+            return leads;
+
+        }
+
 
         public async Task<IEnumerable<Lead>> GetAllLeadsByCreatedById(int userId)
         {

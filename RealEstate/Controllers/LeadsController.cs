@@ -19,9 +19,9 @@
 
         // GET: api/leads
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Lead>>> GetLeads()
+        public async Task<ActionResult<IEnumerable<Lead>>> GetLeads([FromServices] LeadRepository leadRepository)
         {
-            var leads = await _leadRepository.GetAllAsync();
+            var leads = await leadRepository.GetAllAsync();
 
             if (leads == null || !leads.Any())
             {
