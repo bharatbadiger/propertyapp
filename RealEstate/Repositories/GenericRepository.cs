@@ -58,23 +58,11 @@ namespace RealEstate.Repositories
                 foreach (var commentModel in lead.LeadCommentModel)
                 {
                     commentModel.TimeStamp = DateTimeOffset.Now;
-                    if (lead.LeadCommentModel != null && !string.IsNullOrWhiteSpace(lead.LeadCommentModel.Comment))
+                    if (existingEntity is Lead exLeadEntity)
                     {
-                        // Create a new comment
-                        var newComment = new LeadCommentModel
-                        {
-                            Comment = commentModel.Comment,
-                            UserType = commentModel.UserType,
-                            TimeStamp = DateTimeOffset.Now
-                        };
-
-                        // Add the new comment to the existing LeadCommentModel
-                        if (existingEntity is Lead exLeadEntity)
-                        {
-                            exLeadEntity.LeadCommentModel.Add(newComment);
-                        }
-                        
+                        exLeadEntity.LeadCommentModel.Add(commentModel);
                     }
+                        
                 }
 
             }
