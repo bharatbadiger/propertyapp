@@ -57,6 +57,37 @@
         }
 
 
+        public override async Task<Lead> UpdateAsync(int id, Lead updatedEntity)
+        {
+            var existingEntity = await GetByIdAsync(id);
+            if (existingEntity == null)
+            {
+                return null;
+            }
+
+            updatedEntity.CreatedDate = existingEntity.CreatedDate;
+            updatedEntity.UpdatedDate = DateTimeOffset.Now;
+            List<LeadCommentModel> commentModelList = new List<LeadCommentModel>();
+
+            // Clear the existing comments in case of an update
+            //exLeadEntity.LeadCommentModel.Clear();
+
+            if (updatedEntity.LeadCommentModel != null)
+            {
+                foreach (var commentModel in updatedEntity.LeadCommentModel)
+                {
+                    // Set the timestamp for each comment
+                    commentModel.TimeStamp = DateTimeOffset.Now;
+                    existingEntity.LeadCommentModel.Add(commentModel);
+                }
+            }
+            _context.Entry(existingEntity).CurrentValues.SetValues(updatedEntity);
+            await _context.SaveChangesAsync();
+            return existingEntity;
+
+        }
+
+
         public async Task<IEnumerable<Lead>> GetAllLeadsByCreatedById(int userId)
         {
 

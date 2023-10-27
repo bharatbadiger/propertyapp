@@ -99,9 +99,9 @@
 
         // PUT: api/leads/{id}
         [HttpPut("{id}")]
-        public async Task<ActionResult<ApiResponse<Lead>>> UpdateLead(int id, [FromBody] Lead updatedLead)
+        public async Task<ActionResult<ApiResponse<Lead>>> UpdateLead([FromServices] LeadRepository leadRepository, int id, [FromBody] Lead updatedLead)
         {
-            var lead = await _leadRepository.UpdateAsync(id, updatedLead);
+            var lead = await leadRepository.UpdateAsync(id, updatedLead);
 
             if (lead == null)
             {
