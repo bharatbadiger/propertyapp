@@ -50,7 +50,35 @@ namespace RealEstate.Repositories
 
             // Update existingEntity properties with updatedEntity properties
 
-            existingEntity.UpdatedDate = DateTimeOffset.Now;
+            updatedEntity.CreatedDate = existingEntity.CreatedDate;
+            updatedEntity.UpdatedDate = DateTimeOffset.Now;
+
+            if (updatedEntity is Lead lead)
+            {
+                foreach (var commentModel in lead.LeadCommentModel)
+                {
+                    commentModel.TimeStamp = DateTimeOffset.Now;
+                    if (lead.LeadCommentModel != null && !string.IsNullOrWhiteSpace(lead.LeadCommentModel.Comment))
+                    {
+                        // Create a new comment
+                        var newComment = new LeadCommentModel
+                        {
+                            Comment = commentModel.Comment,
+                            UserType = commentModel.UserType,
+                            TimeStamp = DateTimeOffset.Now
+                        };
+
+                        // Add the new comment to the existing LeadCommentModel
+                        if (existingEntity is Lead exLeadEntity)
+                        {
+                            exLeadEntity.LeadCommentModel.Add(newComment);
+                        }
+                        
+                    }
+                }
+
+            }
+
             _context.Entry(existingEntity).CurrentValues.SetValues(updatedEntity);
             await _context.SaveChangesAsync();
             return existingEntity;
