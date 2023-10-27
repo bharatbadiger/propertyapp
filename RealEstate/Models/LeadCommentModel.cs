@@ -6,6 +6,6 @@ namespace RealEstate.Models
     {
         public virtual string? Comment { get; set; }
         public virtual UserType UserType { get; set; }
-        public virtual string? TimeStamp { get; set; }
+        public virtual DateTimeOffset? TimeStamp { get; set; }
     }
 }

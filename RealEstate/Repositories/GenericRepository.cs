@@ -28,6 +28,13 @@ namespace RealEstate.Repositories
         {
             entity.CreatedDate = DateTimeOffset.Now;
             entity.UpdatedDate = DateTimeOffset.Now;
+            if (entity is Lead LeadEntity) {
+                foreach (var commentModel in LeadEntity.LeadCommentModel)
+                {
+                    commentModel.TimeStamp = DateTimeOffset.Now;
+                }
+            }
+
             _context.Set<TEntity>().Add(entity);
             await _context.SaveChangesAsync();
             return entity;
