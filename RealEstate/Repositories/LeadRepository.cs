@@ -32,6 +32,7 @@
                     .ToList();
             }
 
+            await _context.Entry(lead).Collection(l => l.LeadCommentModel).LoadAsync();
             return lead;
         }
 
@@ -53,6 +54,7 @@
                         .OrderBy(comment => comment.TimeStamp)
                         .ToList();
                 }
+                await _context.Entry(lead).Collection(l => l.LeadCommentModel).LoadAsync();
                 // Load any other related data as needed
             }
 
