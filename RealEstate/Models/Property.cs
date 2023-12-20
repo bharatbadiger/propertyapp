@@ -26,6 +26,7 @@ namespace RealEstate.Models
         public virtual AreaUnit AreaUnit { get; set; }
         [StringLength(500, ErrorMessage = "Description cannot exceed 500 characters.")]
         public virtual string? Description { get; set; }
+        public virtual string? BuilderPhoneNumber { get; set; }
         public virtual DateTimeOffset CreatedDate { get; set; }
         public virtual DateTimeOffset UpdatedDate { get; set; }
     }
