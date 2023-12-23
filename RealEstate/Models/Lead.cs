@@ -18,6 +18,7 @@ namespace RealEstate.Models
         public virtual User? CreatedBy { get; set; }
         public int CreatedById { get; set; }
         public int? PropertyId { get; set; }
+        public virtual string PropertyType { get; set; }
         public virtual DateTimeOffset CreatedDate { get; set; }
         public virtual DateTimeOffset UpdatedDate { get; set; }
     }
