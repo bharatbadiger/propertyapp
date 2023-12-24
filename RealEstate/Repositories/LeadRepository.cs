@@ -21,7 +21,7 @@
             var lead = await _context.Leads
                     //.Include(l => l.CreatedBy)
                     //.Include(l => l.LeadCommentModel) // Include the LeadCommentModel
-                    .Include(l => l.PropertyType)
+                    //.Include(l => l.PropertyType)
                     .Where(l => l.Id == id)
                     .FirstOrDefaultAsync();
             await _context.Entry(lead).Reference(l => l.CreatedBy).LoadAsync();
