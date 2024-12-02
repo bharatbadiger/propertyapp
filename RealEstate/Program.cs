@@ -37,7 +37,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors("explicit");
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
